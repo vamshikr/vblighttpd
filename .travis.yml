@@ -1,6 +1,5 @@
-sudo: required
 language: C
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y automake
-script: ./configure --without-bzip2 && make
+script: autoreconf -f -i && ./configure --without-bzip2 && make
