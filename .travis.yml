@@ -1,2 +1,2 @@
 language: C
-script: configure --without-bzip2 && make
+script: ./configure --without-bzip2 && make
