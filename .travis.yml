@@ -1,5 +1,26 @@
 language: C
+# before_install:
+#  - sudo apt-get -qq update
+#  - sudo apt-get install -y automake
+# script:  && make
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "B/8jyuZBBlr+bUeleWg+koVuijY+V5CYyzaZ34wIWAPnwMPlh8KwUrNA+rhlIRqtJFvPIQuPhmj2IKH2HOd+4qW6xB9X/Bccd2KWmOAXkQi+9NPT2AbkZlFggUPDXsKboyNx4t6m0K2tC3nzIqkpV/innvL/W6IZYBTPOfx3Et1zANI/Cqu0MtF+34sk9xHjWTDlrWiL/GFVcNerINYULDrVp06b+buJI87cYJ27yvetihWhWsXnIIfWvjLCJTQzJ008cLCJLvUVmabZo+EIK2jkxi3eAgJ0VXFLWzxb6lRtgliob4sL3SXPAHaJ63BZWEnLcQ8sAexhhSQPExvf2Irkz085Sj1PL/GtMmO6NU9gx7XVcDMpKwRDyDrzSL7XkFvu9yRFxxUETQPtkoBZw1qRm+k8mnNdzigmRHMYrwNZi7gLIcShrqc7EdgPoxeWOBW08jvSLzcmCYzE93gVLllIrwYQp9VXRNJtHg0RNaGDEl3wiWhLjgAz5zxjNBy5H3IJzZDBLP5fjlZNlkQ0WQFbPEkyCiIOM664Sm5DT8Nhrmikfvi7+wB9at0MTDIrPVxsjmZkaT5ZrfwusiPjMLj+SXRDRFHni/jgBMn0Q7UhIMDZWR5t7FnoQTlqLhkDvoN77hTG0F9/0/t3OUtbq32oVzAC+0ZhyvDuyT/WMhI="
+
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y automake
-script: autoreconf -f -i && ./configure --without-bzip2 && make
+  - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  coverity_scan:
+    project:
+      name: "vamshikr/vblighttpd"
+      description: "<Your project description here>"
+    notification_email: vamshi.basupalli@outlook.com
+    build_command_prepend: autoreconf -f -i && ./configure  --without-bzip2
+    build_command:   make
+    branch_pattern: coverity_scan
